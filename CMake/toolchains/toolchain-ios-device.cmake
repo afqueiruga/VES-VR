@@ -21,7 +21,7 @@ execute_process(COMMAND /usr/bin/xcrun -sdk iphoneos --show-sdk-path
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 # Set compilation flags
-set(CMAKE_OSX_ARCHITECTURES "armv7;armv7s")
+set(CMAKE_OSX_ARCHITECTURES "armv7;armv7s;arm64")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -miphoneos-version-min=5.0 -fvisibility=hidden -fvisibility-inlines-hidden")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -miphoneos-version-min=5.0 -fvisibility=hidden -fvisibility-inlines-hidden")
 

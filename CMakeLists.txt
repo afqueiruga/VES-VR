@@ -29,6 +29,8 @@ include(CMake/ves-macros.cmake)
 include(CMake/ves-testing.cmake)
 include(CMake/ves-version.cmake)
 
+# set(CMAKE_OSX_ARCHITECTURES "arm64")
+
 # build project
 add_subdirectory(src)
 
