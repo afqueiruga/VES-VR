@@ -450,7 +450,7 @@ double vesCamera::clearDepth() const
 
 void vesCamera::accept(vesVisitor &visitor)
 {
-  visitor.visit(*this);
+  visitor.visit(*this); // BOOM: This is where shit goes down.
 }
 
 

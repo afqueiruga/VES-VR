@@ -59,7 +59,9 @@ public:
 
   /// Render the scene
   virtual void render();
-
+  /// Push the commands for rendering the models without clearing or anything
+  virtual void render_models_only(float mv_mat_raw[16]);
+  
   /// Reset camera, calculate its position and other parameters
   /// again based on the current scene.
   virtual void resetCamera();

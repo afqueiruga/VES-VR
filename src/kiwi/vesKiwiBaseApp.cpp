@@ -171,6 +171,17 @@ void vesKiwiBaseApp::render()
   this->didRender();
 }
 
+
+//----------------------------------------------------------------------------
+void vesKiwiBaseApp::render_models_only(float mv_mat_raw[16])
+{
+  this->willRender();
+  this->updateTransitions();
+  this->Internal->Renderer->resetCameraClippingRange();
+  this->Internal->Renderer->render_models_only( mv_mat_raw);
+  this->didRender();
+}
+
 //----------------------------------------------------------------------------
 void vesKiwiBaseApp::resizeView(int width, int height)
 {

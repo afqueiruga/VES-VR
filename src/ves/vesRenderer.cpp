@@ -46,7 +46,7 @@ vesRenderer::vesRenderer():
 
   this->m_camera->addChild(this->m_sceneRoot);
 
-  this->setupBackground();
+  //this->setupBackground();
 }
 
 
@@ -86,6 +86,47 @@ void vesRenderer::render()
     this->m_renderStage->clearAll();
   }
 }
+
+void vesRenderer::render_models_only(float mv_mat_raw[16])
+{
+  // By default enable depth test.
+  //glEnable(GL_DEPTH_TEST);
+  
+	 
+  if (this->m_sceneRoot) {
+
+    // Update traversal.
+    this->updateTraverseScene();
+
+    // Cull traversal.
+    this->cullTraverseScene();
+
+    vesRenderState renderState;
+    renderState.m_viewSize = vesVector2f(this->m_width, this->m_height);
+    // Push the model view matrix
+    vesMatrix4x4f mv_mat;
+    mv_mat << mv_mat_raw[0], mv_mat_raw[1], mv_mat_raw[2], mv_mat_raw[3],
+      mv_mat_raw[4], mv_mat_raw[5], mv_mat_raw[6], mv_mat_raw[7],
+      mv_mat_raw[8], mv_mat_raw[9], mv_mat_raw[10], mv_mat_raw[11],
+      mv_mat_raw[12], mv_mat_raw[13], mv_mat_raw[14], mv_mat_raw[15];
+    // Clear all the previous render targets.
+    // this->m_camera->clearRenderTargets(renderState);
+
+    // For now, lets not push camera to the stage, just call
+    // render on render target of the current camera.
+    // this->m_camera->renderTarget()->render(renderState);
+    // renderState.applyProjectionMatrix(&mv_mat);
+    renderState.applyModelViewMatrix(&mv_mat);
+    std::cout << " in render_models_only \n";
+    this->m_renderStage->render_models_only(renderState, 0);
+
+    // \note: For now clear the stage.
+    // \todo: Add an optimization where we could save whole or
+    // part of the the stage.
+    this->m_renderStage->clearAll();
+  }
+}
+
 
 
 void vesRenderer::resize(int width, int height, float scale)

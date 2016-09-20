@@ -81,7 +81,8 @@ void vesRenderStage::renderPostRenderStages(vesRenderState &renderState, vesRend
 
   for (RenderStageList::iterator itr = this->m_postRenderList.begin();
       itr != this->m_postRenderList.end(); ++itr) {
-    itr->second->render(renderState, previous);
+    printf(" in post\n");
+    itr->second->render_models_only(renderState, previous);
   }
 }
 

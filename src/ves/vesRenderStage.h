@@ -38,6 +38,7 @@
 #include <list>
 #include <map>
 #include <vector>
+#include <iostream>
 
 class vesRenderStage
 {
@@ -120,7 +121,48 @@ public:
 
     this->renderPostRenderStages(renderState, previous);
   }
+  
+  void render_models_only(vesRenderState &renderState, vesRenderLeaf *previous)
+  {
+    //this->renderPreRenderStages(renderState, previous);
+/* printf(" YO DAWG WHERE DOES THIS GO? \n"); */
+    if (this->m_viewport) {
+      /*
+      this->m_viewport->render(renderState);
 
+      if (this->m_clearMask & GL_COLOR_BUFFER_BIT) {
+        glClearColor(this->m_clearColor[0], this->m_clearColor[1],
+          this->m_clearColor[2], this->m_clearColor[2]);
+      }
+
+      if (this->m_clearMask & GL_DEPTH_BUFFER_BIT) {
+        glClearDepthf(this->m_clearDepth);
+        glDepthMask( GL_TRUE );
+      }
+
+      glClear(this->m_clearMask);*/
+    }
+    BinRenderLeavesMap::iterator itr = this->m_binRenderLeavesMap.begin();
+    RenderLeaves::iterator rlsItr;
+    
+    int i=0;
+    std::cout << "here" <<std::endl;
+    for (; itr != this->m_binRenderLeavesMap.end(); ++itr) {
+      std::cout << " itr: " << i << std::endl;
+      for (rlsItr = itr->second.begin(); rlsItr != itr->second.end(); ++rlsItr) {
+        (*rlsItr).render(renderState, previous);
+
+        previous = &(*rlsItr);
+      }
+
+      // Make sure to restore the state.
+      if (!itr->second.empty()) {
+        (*(--rlsItr)).finalize(renderState);
+      }
+    }
+    std::cout << "there" <<std::endl;
+    this->renderPostRenderStages(renderState, previous); // Everything is rendered in here.
+  }
   void clearAll()
   {
     this->m_binRenderLeavesMap.clear();

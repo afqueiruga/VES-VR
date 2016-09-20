@@ -91,7 +91,7 @@ void vesCullVisitor::visit(vesActor &actor)
 
 
 void vesCullVisitor::visit(vesCamera &camera)
-{
+{ //BOOM: this is where shit goes down
   vesMatrix4x4f matrix = this->modelViewMatrix();
   camera.computeLocalToWorldMatrix(matrix, *this);
 
@@ -126,7 +126,7 @@ void vesCullVisitor::visit(vesCamera &camera)
     this->invokeCallbacksAndTraverse(camera);
 
     this->popRenderStage();
-
+    // So here, the camera's renderstage is set to be a post-child of cullvistor's renderstage, which is a pointer to vesRenderer's renderstage. WTF!
     switch (camera.renderOrder()) {
     case vesCamera::PreRender:
       this->renderStage()->addPreRenderStage(renderStage, camera.renderOrderPriority());
