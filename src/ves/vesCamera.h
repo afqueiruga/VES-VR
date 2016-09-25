@@ -273,6 +273,9 @@ public:
   virtual bool computeWorldToLocalMatrix(vesMatrix4x4f& matrix,
                                          vesVisitor& visitor);
 
+  void set_post_model_view_mat(vesMatrix4x4f m);
+  void set_post_projection_mat(vesMatrix4x4f m);
+
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 protected:
   void computeDistance();
@@ -290,6 +293,9 @@ protected:
   vesVector3f   m_directionOfProjection;
   double        m_windowCenter[2];
   bool          m_parallelProjection;
+
+  vesMatrix4x4f m_post_model_view_mat;
+  vesMatrix4x4f m_post_projection_mat;
 
   vesSharedPtr<vesViewport> m_viewport;
   vesSharedPtr<vesRenderStage> m_renderStage;

@@ -27,7 +27,7 @@
 #include "vesRenderState.h"
 #include "vesViewport.h"
 #include "vesVisitor.h"
-
+#include "vesEigen.h"
 // C/C++ includes
 #include <algorithm>
 #include <cassert>
@@ -93,9 +93,21 @@ vesCamera::~vesCamera()
 
 vesMatrix4x4f vesCamera::computeViewTransform()
 {
-  return vesLookAt (this->m_position,
-                    this->m_focalPoint,
-                    this->m_viewUp);
+  std::cout << " In the camera: \n";
+  std:: cout << this->m_post_model_view_mat << std::endl;
+  std::cout << vesLookAt (this->m_position,
+			  this->m_focalPoint,
+			  this->m_viewUp) <<std::endl;
+  std::cout << this->m_post_model_view_mat * 
+    vesLookAt (this->m_position,
+	       this->m_focalPoint,
+	       this->m_viewUp) << std::endl;
+  return 
+    this->m_post_model_view_mat.transpose() *
+    makeScaleMatrix4x4(0.05,0.05,0.05) *
+    vesLookAt (this->m_position,
+	       this->m_focalPoint,
+	       this->m_viewUp);
 }
 
 
@@ -103,6 +115,7 @@ vesMatrix4x4f vesCamera::computeProjectionTransform(float aspect,
                                                     float nearz,
                                                     float farz)
 {
+  return this->m_post_projection_mat.transpose();
   vesMatrix4x4f matrix;
   matrix.setIdentity();
 
@@ -485,4 +498,13 @@ bool vesCamera::computeWorldToLocalMatrix(vesMatrix4x4f &matrix,
   }
 
   return true;
+}
+
+
+void vesCamera::set_post_model_view_mat(vesMatrix4x4f m) {
+  this->m_post_model_view_mat = m;
+}
+
+void vesCamera::set_post_projection_mat(vesMatrix4x4f m) {
+  this->m_post_projection_mat = m;
 }
