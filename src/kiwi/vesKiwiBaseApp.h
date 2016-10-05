@@ -68,7 +68,7 @@ public:
   // This calls vesRenderer::render_models_only().
   // Down the line, it does everything that render does, but doesn't wipe stuff or
   // mess with the camera too badly.
-  void render_models_only(float mv_mat_raw[16],float pr_mat_raw[16]);
+  void render_models_only(float mv_left_mat_raw[16], float mv_right_mat_raw[16], float pr_mat_raw[16]);
 
   /// Reset the camera to a default viewing direction and position.
   /// The camera view direction is reset to the world +Z axis and the view up

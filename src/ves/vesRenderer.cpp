@@ -46,7 +46,7 @@ vesRenderer::vesRenderer():
 
   this->m_camera->addChild(this->m_sceneRoot);
 
-  //this->setupBackground();
+  this->setupBackground();
 }
 
 
@@ -87,28 +87,32 @@ void vesRenderer::render()
   }
 }
 
-void vesRenderer::render_models_only(float mv_mat_raw[16], float pr_mat_raw[16])
+void vesRenderer::render_models_only(float mv_left_mat_raw[16], float mv_right_mat_raw[16], float pr_mat_raw[16])
 {
   // By default enable depth test.
   //glEnable(GL_DEPTH_TEST);
   
 	 
   if (this->m_sceneRoot) {
-    vesMatrix4x4f mv_mat;
-    mv_mat << mv_mat_raw[0], mv_mat_raw[1], mv_mat_raw[2], mv_mat_raw[3],
-      mv_mat_raw[4], mv_mat_raw[5], mv_mat_raw[6], mv_mat_raw[7],
-      mv_mat_raw[8], mv_mat_raw[9], mv_mat_raw[10], mv_mat_raw[11],
-      mv_mat_raw[12], mv_mat_raw[13], mv_mat_raw[14], mv_mat_raw[15];
-    std::cout << mv_mat<< std::endl;
+    vesMatrix4x4f mv_left_mat;
+    mv_left_mat << mv_left_mat_raw[0], mv_left_mat_raw[1], mv_left_mat_raw[2], mv_left_mat_raw[3],
+      mv_left_mat_raw[4], mv_left_mat_raw[5], mv_left_mat_raw[6], mv_left_mat_raw[7],
+      mv_left_mat_raw[8], mv_left_mat_raw[9], mv_left_mat_raw[10], mv_left_mat_raw[11],
+      mv_left_mat_raw[12], mv_left_mat_raw[13], mv_left_mat_raw[14], mv_left_mat_raw[15];
+    
+    vesMatrix4x4f mv_right_mat;
+    mv_right_mat << mv_right_mat_raw[0], mv_right_mat_raw[1], mv_right_mat_raw[2], mv_right_mat_raw[3],
+      mv_right_mat_raw[4], mv_right_mat_raw[5], mv_right_mat_raw[6], mv_right_mat_raw[7],
+      mv_right_mat_raw[8], mv_right_mat_raw[9], mv_right_mat_raw[10], mv_right_mat_raw[11],
+      mv_right_mat_raw[12], mv_right_mat_raw[13], mv_right_mat_raw[14], mv_right_mat_raw[15];
+    this->m_camera->set_model_view_mat(mv_left_mat,mv_right_mat);
+
     vesMatrix4x4f pr_mat;
     pr_mat << pr_mat_raw[0], pr_mat_raw[1], pr_mat_raw[2], pr_mat_raw[3],
       pr_mat_raw[4], pr_mat_raw[5], pr_mat_raw[6], pr_mat_raw[7],
       pr_mat_raw[8], pr_mat_raw[9], pr_mat_raw[10], pr_mat_raw[11],
       pr_mat_raw[12], pr_mat_raw[13], pr_mat_raw[14], pr_mat_raw[15];
-    std::cout << pr_mat<< std::endl;
-
-    this->m_camera->set_post_model_view_mat(mv_mat);
-    this->m_camera->set_post_projection_mat(pr_mat);
+    this->m_camera->set_projection_mat(pr_mat,true);
 
     // Update traversal.
     this->updateTraverseScene();
@@ -126,11 +130,8 @@ void vesRenderer::render_models_only(float mv_mat_raw[16], float pr_mat_raw[16])
     // For now, lets not push camera to the stage, just call
     // render on render target of the current camera.
     
-    // renderState.applyProjectionMatrix(&mv_mat);
     // this->m_camera->renderTarget()->render(renderState);
-    // renderState.applyModelViewMatrix(&mv_mat);
 
-    std::cout << " in render_models_only \n";
     this->m_renderStage->render_models_only(renderState, 0);
 
     // \note: For now clear the stage.
@@ -266,7 +267,7 @@ void vesRenderer::resetCamera()
   // Update the camera
   this->m_camera->setFocalPoint(center);
   vesVector3f temp = vn;
-  temp*= distance+15.0;
+  temp*= distance;
   temp+= center;
   this->m_camera->setPosition(temp);
 

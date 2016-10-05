@@ -33,6 +33,8 @@
 #include <cassert>
 #include <iostream>
 
+float m_focalPoint;
+
 vesCamera::vesCamera() : vesTransformNode()
 {
   this->setReferenceFrame(Absolute);
@@ -65,6 +67,11 @@ vesCamera::vesCamera() : vesTransformNode()
   this->m_windowCenter[0] = 0.0;
   this->m_windowCenter[1] = 0.0;
 
+  this->m_use_projection_mat = false;
+  this->m_left_model_view_mat = makeScaleMatrix4x4(1.0,1.0,1.0);
+  this->m_right_model_view_mat = makeScaleMatrix4x4(1.0,1.0,1.0);
+  this->m_projection_mat = makeScaleMatrix4x4(1.0,1.0,1.0);
+    
   this->m_viewport = vesViewport::Ptr(new vesViewport());
 
   this->m_renderOrder = PostRender;
@@ -93,21 +100,14 @@ vesCamera::~vesCamera()
 
 vesMatrix4x4f vesCamera::computeViewTransform()
 {
-  std::cout << " In the camera: \n";
-  std:: cout << this->m_post_model_view_mat << std::endl;
-  std::cout << vesLookAt (this->m_position,
-			  this->m_focalPoint,
-			  this->m_viewUp) <<std::endl;
-  std::cout << this->m_post_model_view_mat * 
-    vesLookAt (this->m_position,
-	       this->m_focalPoint,
-	       this->m_viewUp) << std::endl;
   return 
-    this->m_post_model_view_mat.transpose() *
-    makeScaleMatrix4x4(0.05,0.05,0.05) *
+    
+    //makeScaleMatrix4x4(0.05,0.05,0.05) *
+    this->m_left_model_view_mat.transpose() *
     vesLookAt (this->m_position,
 	       this->m_focalPoint,
-	       this->m_viewUp);
+	       this->m_viewUp) *
+    this->m_right_model_view_mat.transpose();
 }
 
 
@@ -115,7 +115,10 @@ vesMatrix4x4f vesCamera::computeProjectionTransform(float aspect,
                                                     float nearz,
                                                     float farz)
 {
-  return this->m_post_projection_mat.transpose();
+  // Use the given projection matrix if that's what mode we're in.
+  if(this->m_use_projection_mat) {
+    return this->m_projection_mat.transpose();
+  }
   vesMatrix4x4f matrix;
   matrix.setIdentity();
 
@@ -501,10 +504,12 @@ bool vesCamera::computeWorldToLocalMatrix(vesMatrix4x4f &matrix,
 }
 
 
-void vesCamera::set_post_model_view_mat(vesMatrix4x4f m) {
-  this->m_post_model_view_mat = m;
+void vesCamera::set_model_view_mat(vesMatrix4x4f ml, vesMatrix4x4f mr) {
+  this->m_left_model_view_mat = ml;
+  this->m_right_model_view_mat = mr;
 }
 
-void vesCamera::set_post_projection_mat(vesMatrix4x4f m) {
-  this->m_post_projection_mat = m;
+void vesCamera::set_projection_mat(vesMatrix4x4f m, bool override) {
+  this->m_use_projection_mat = override;
+  this->m_projection_mat = m;
 }

@@ -81,11 +81,22 @@ void vesRenderStage::renderPostRenderStages(vesRenderState &renderState, vesRend
 
   for (RenderStageList::iterator itr = this->m_postRenderList.begin();
       itr != this->m_postRenderList.end(); ++itr) {
-    printf(" in post\n");
+    itr->second->render(renderState, previous);
+  }
+}
+/*
+void vesRenderStage::renderPostRenderStages_models_only(vesRenderState &renderState, vesRenderLeaf *previous)
+{
+  if (m_postRenderList.empty()) {
+    return;
+  }
+
+  for (RenderStageList::iterator itr = this->m_postRenderList.begin();
+      itr != this->m_postRenderList.end(); ++itr) {
     itr->second->render_models_only(renderState, previous);
   }
 }
-
+*/
 
 void vesRenderStage::setClearMask(unsigned int mask)
 {

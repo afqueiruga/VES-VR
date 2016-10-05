@@ -125,7 +125,6 @@ public:
   void render_models_only(vesRenderState &renderState, vesRenderLeaf *previous)
   {
     //this->renderPreRenderStages(renderState, previous);
-/* printf(" YO DAWG WHERE DOES THIS GO? \n"); */
     if (this->m_viewport) {
       /*
       this->m_viewport->render(renderState);
@@ -146,9 +145,7 @@ public:
     RenderLeaves::iterator rlsItr;
     
     int i=0;
-    std::cout << "here" <<std::endl;
     for (; itr != this->m_binRenderLeavesMap.end(); ++itr) {
-      std::cout << " itr: " << i << std::endl;
       for (rlsItr = itr->second.begin(); rlsItr != itr->second.end(); ++rlsItr) {
         (*rlsItr).render(renderState, previous);
 
@@ -160,7 +157,6 @@ public:
         (*(--rlsItr)).finalize(renderState);
       }
     }
-    std::cout << "there" <<std::endl;
     this->renderPostRenderStages(renderState, previous); // Everything is rendered in here.
   }
   void clearAll()

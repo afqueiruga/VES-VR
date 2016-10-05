@@ -273,8 +273,8 @@ public:
   virtual bool computeWorldToLocalMatrix(vesMatrix4x4f& matrix,
                                          vesVisitor& visitor);
 
-  void set_post_model_view_mat(vesMatrix4x4f m);
-  void set_post_projection_mat(vesMatrix4x4f m);
+  void set_model_view_mat(vesMatrix4x4f ml, vesMatrix4x4f mr);
+  void set_projection_mat(vesMatrix4x4f m, bool override);
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 protected:
@@ -294,8 +294,11 @@ protected:
   double        m_windowCenter[2];
   bool          m_parallelProjection;
 
-  vesMatrix4x4f m_post_model_view_mat;
-  vesMatrix4x4f m_post_projection_mat;
+  /* Extra matrices to be set by a VR engine */
+  vesMatrix4x4f m_left_model_view_mat;
+  vesMatrix4x4f m_right_model_view_mat;
+  bool m_use_projection_mat;
+  vesMatrix4x4f m_projection_mat;
 
   vesSharedPtr<vesViewport> m_viewport;
   vesSharedPtr<vesRenderStage> m_renderStage;

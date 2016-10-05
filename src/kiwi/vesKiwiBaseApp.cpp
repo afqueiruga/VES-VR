@@ -173,12 +173,12 @@ void vesKiwiBaseApp::render()
 
 
 //----------------------------------------------------------------------------
-void vesKiwiBaseApp::render_models_only(float mv_mat_raw[16],float pr_mat_raw[16])
+void vesKiwiBaseApp::render_models_only(float mv_left_mat_raw[16], float mv_right_mat_raw[16], float pr_mat_raw[16])
 {
   this->willRender();
   this->updateTransitions();
   this->Internal->Renderer->resetCameraClippingRange();
-  this->Internal->Renderer->render_models_only( mv_mat_raw, pr_mat_raw );
+  this->Internal->Renderer->render_models_only( mv_left_mat_raw, mv_right_mat_raw, pr_mat_raw );
   this->didRender();
 }
 

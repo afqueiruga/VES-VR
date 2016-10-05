@@ -831,7 +831,7 @@ void vesKiwiViewerApp::resetScene()
 {
   this->resetErrorMessage();
   this->removeAllDataRepresentations();
-  //EDIT: this->setDefaultBackgroundColor();
+  this->setDefaultBackgroundColor();
   this->setAnimating(false);
   this->Internal->CameraSpinner->disable();
 
