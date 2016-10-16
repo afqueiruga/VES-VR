@@ -86,13 +86,8 @@ void vesRenderer::render()
     this->m_renderStage->clearAll();
   }
 }
-
 void vesRenderer::render_models_only(float mv_left_mat_raw[16], float mv_right_mat_raw[16], float pr_mat_raw[16])
 {
-  // By default enable depth test.
-  //glEnable(GL_DEPTH_TEST);
-  
-	 
   if (this->m_sceneRoot) {
     vesMatrix4x4f mv_left_mat;
     mv_left_mat << mv_left_mat_raw[0], mv_left_mat_raw[1], mv_left_mat_raw[2], mv_left_mat_raw[3],
@@ -125,12 +120,11 @@ void vesRenderer::render_models_only(float mv_left_mat_raw[16], float mv_right_m
     // Push the model view matrix
 
     // Clear all the previous render targets.
-    // this->m_camera->clearRenderTargets(renderState);
+    this->m_camera->clearRenderTargets(renderState);
 
     // For now, lets not push camera to the stage, just call
-    // render on render target of the current camera.
-    
-    // this->m_camera->renderTarget()->render(renderState);
+    //render on render target of the current camera.
+    this->m_camera->renderTarget()->render(renderState);
 
     this->m_renderStage->render_models_only(renderState, 0);
 
@@ -138,6 +132,10 @@ void vesRenderer::render_models_only(float mv_left_mat_raw[16], float mv_right_m
     // \todo: Add an optimization where we could save whole or
     // part of the the stage.
     this->m_renderStage->clearAll();
+    // Exit the hacked mode.
+    this->m_camera->set_model_view_mat(makeScaleMatrix4x4(1.0,1.0,1.0),
+				       makeScaleMatrix4x4(1.0,1.0,1.0));
+    this->m_camera->set_projection_mat(makeScaleMatrix4x4(1.0,1.0,1.0),false);
   }
 }
 
