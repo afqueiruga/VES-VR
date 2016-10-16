@@ -194,9 +194,20 @@
 }
 -(void) onToggleVR:(UIBarButtonItem*)UIBarButtonItem
 {
-    std::cout << "I was pressed" << std::endl;
     VRViewController *viewController = [[VRViewController alloc] init];
+    [viewController setKiwiApp:self->mKiwiApp];
+    //viewController.parentvc = self;
+    GLKView *view = (GLKView *)viewController.view;
+    
+    //[EAGLContext setCurrentContext:view.context];
+
+    //[self.view insertSubview:viewController.view atIndex:0];
+    //[viewController viewDidAppear:YES];
+    
+    EAGLContext *context2 = [[EAGLContext alloc] initWithAPI:[self.context API] sharegroup:self.context.sharegroup];
+    view.context = context2;
     [self presentViewController:viewController animated:YES completion:nil];
+    [EAGLContext setCurrentContext:self.context];
 }
 -(void) onMultisamplingChanged
 {
@@ -579,7 +590,7 @@
 }
 
 - (void)dealloc
-{    
+{
   [self tearDownGL];
   
   if ([EAGLContext currentContext] == self.context) {
@@ -659,7 +670,6 @@
     NSLog(@"Warning: draw called while paused");
   }
   */
-
   if (self->mKiwiApp && !self.paused) {
     self->mKiwiApp->render();
   }

@@ -11,7 +11,10 @@
 
 #import <UIKit/UIKit.h>
 
+#include "vesKiwiViewerApp.h"
+
 @interface VRViewController : UIViewController
+- (void) setKiwiApp:(vesKiwiViewerApp::Ptr)appPtr;
 
 @end
 

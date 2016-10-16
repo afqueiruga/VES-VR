@@ -10,7 +10,7 @@
 #define VRRenderer_h
 
 #import "GVRCardboardView.h"
-
+#include "vesKiwiViewerApp.h"
 /** VR renderer delegate. */
 @protocol VRRendererDelegate <NSObject>
 @optional
@@ -24,7 +24,9 @@
 @interface VRRenderer : NSObject<GVRCardboardViewDelegate>
 
 @property(nonatomic, weak) id<VRRendererDelegate> delegate;
+@property(nonatomic, weak) UIViewController* parentvc;
 
+- (void) setKiwiApp:(vesKiwiViewerApp::Ptr)appPtr;
 @end
 
 
