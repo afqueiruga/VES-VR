@@ -201,7 +201,7 @@ public:
   /// Clipping distance is measured in world coordinate unless a scale factor
   /// exists in camera's ModelTransformMatrix.
   void setClippingRange(float near, float far);
-
+  void getClippingRange(float *near, float *far);
 
   /// Set render target for the camera. Render taget defines
   /// the placeholder for the rendered pixels.

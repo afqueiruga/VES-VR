@@ -259,6 +259,11 @@ void vesCamera::setClippingRange(float znear, float zfar)
   this->m_clippingRange[0] = znear;
   this->m_clippingRange[1] = zfar;
 }
+void vesCamera::getClippingRange(float *znear, float *zfar)
+{
+  *znear = this->m_clippingRange[0];
+  *zfar = this->m_clippingRange[1];
+}
 
 
 void vesCamera::orthogonalizeViewUp()
