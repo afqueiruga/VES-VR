@@ -124,9 +124,10 @@ public:
   
   void render_models_only(vesRenderState &renderState, vesRenderLeaf *previous)
   {
-    //this->renderPreRenderStages(renderState, previous);
+    this->renderPreRenderStages_models_only(renderState, previous);
+    /*
     if (this->m_viewport) {
-      /*
+      
       this->m_viewport->render(renderState);
 
       if (this->m_clearMask & GL_COLOR_BUFFER_BIT) {
@@ -139,8 +140,8 @@ public:
         glDepthMask( GL_TRUE );
       }
 
-      glClear(this->m_clearMask);*/
-    }
+      glClear(this->m_clearMask);
+    }*/
     BinRenderLeavesMap::iterator itr = this->m_binRenderLeavesMap.begin();
     RenderLeaves::iterator rlsItr;
     
@@ -157,7 +158,7 @@ public:
         (*(--rlsItr)).finalize(renderState);
       }
     }
-    this->renderPostRenderStages(renderState, previous); // Everything is rendered in here.
+    this->renderPostRenderStages_models_only(renderState, previous); // Everything is rendered in here.
   }
   void clearAll()
   {
@@ -172,6 +173,9 @@ public:
   void renderPreRenderStages(vesRenderState &renderState, vesRenderLeaf *previous);
   void renderPostRenderStages(vesRenderState &renderState, vesRenderLeaf *previous);
 
+  void renderPreRenderStages_models_only(vesRenderState &renderState, vesRenderLeaf *previous);
+  void renderPostRenderStages_models_only(vesRenderState &renderState, vesRenderLeaf *previous);
+  
   void setClearMask(unsigned int mask);
   unsigned int clearMask() const;
 

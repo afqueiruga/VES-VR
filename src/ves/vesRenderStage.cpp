@@ -84,7 +84,19 @@ void vesRenderStage::renderPostRenderStages(vesRenderState &renderState, vesRend
     itr->second->render(renderState, previous);
   }
 }
-/*
+
+void vesRenderStage::renderPreRenderStages_models_only(vesRenderState &renderState,
+                                           vesRenderLeaf *previous)
+{
+  if (this->m_preRenderList.empty()) {
+    return;
+  }
+
+  for (RenderStageList::iterator itr = this->m_preRenderList.begin();
+    itr != this->m_preRenderList.end(); ++itr) {
+      itr->second->render_models_only(renderState, previous);
+  }
+}
 void vesRenderStage::renderPostRenderStages_models_only(vesRenderState &renderState, vesRenderLeaf *previous)
 {
   if (m_postRenderList.empty()) {
@@ -96,7 +108,7 @@ void vesRenderStage::renderPostRenderStages_models_only(vesRenderState &renderSt
     itr->second->render_models_only(renderState, previous);
   }
 }
-*/
+
 
 void vesRenderStage::setClearMask(unsigned int mask)
 {
