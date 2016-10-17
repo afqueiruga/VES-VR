@@ -1,3 +1,5 @@
+This is AFQ's Google VR SDK enabled fork of VES.
+
 Note: VES is no longer being maintained. Please use VTK as we have added support
 for mobile architectures.
 
