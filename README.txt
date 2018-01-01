@@ -1,3 +1,13 @@
+VR
+==
+
+This is my fork of the Paraview mobile app to support the Google Cardboard VR libary.
+The iOS app has an extra button to it switches to rendering the scene in VR. It worked
+pretty well. However, the desktop-mobile linking doesn't compile properly in this latest
+version of VES, and the library is no longer maintained, so I stopped working on it 
+heavily. I haven't looked at the new VTK library because there isn't a new mobile app
+yet.
+
 Note: VES is no longer being maintained. Please use VTK as we have added support
 for mobile architectures.
 
